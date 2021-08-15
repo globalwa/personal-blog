@@ -1,0 +1,14 @@
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0px;
+    height: 100vh;
+}
+
+.container {
+    padding: 0px 15px;
+    margin: 0px auto;
+    max-width: 1030px;
+}

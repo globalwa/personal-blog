@@ -1,13 +1,31 @@
 from app import app, db
-from app.forms import LoginForm, RegisterForm
-from app.models import User
+from app.forms import LoginForm, RegisterForm, PostForm
+from app.models import Post, User
 from flask import render_template, url_for, redirect
-from flask_login import login_user, logout_user, login_required
+from flask_login import login_user, logout_user, login_required, current_user
 
-@app.route('/')
-@app.route('/index')
+@app.route('/', methods=['GET', 'POST'])
+@app.route('/index', methods=['GET', 'POST'])
 def index():
-    return render_template('index.html')
+    form = PostForm()
+    posts = Post.query.order_by(Post.id).all()
+
+    if form.validate_on_submit():
+
+        post = Post.query.filter_by(title=form.title.data)
+        if post is None:
+            post = Post(
+                title=form.title.data, 
+                body=form.body.data,
+                author=current_user
+            )
+            db.session.add(post)
+            db.session.commit()
+        return redirect(url_for('index'))
+
+    return render_template(
+        'index.html', form=form, posts=posts
+    )
 
 @app.route('/about')
 @login_required

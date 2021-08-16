@@ -1,6 +1,6 @@
 from app.models import User
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, SubmitField
+from wtforms import StringField, PasswordField, SubmitField, TextAreaField
 from wtforms.validators import DataRequired, EqualTo, Length, ValidationError
 
 class LoginForm(FlaskForm):
@@ -27,10 +27,20 @@ class RegisterForm(FlaskForm):
     def validate_username(self, field):
         user = User.query.filter_by(username=field.data).first()
         if user is not None:
-            print(user)
             raise ValidationError(
                 message='This user already exists. Enter another nickname.'
             )
+
+class PostForm(FlaskForm):
+    title = StringField(
+        label='Title:',
+        validators=[DataRequired(), Length(min=4, max=64)]
+    )
+    body = TextAreaField(
+        label='Text:',
+        validators=[DataRequired()]
+    )
+    submit = SubmitField(label='Publish')
         
 
 

@@ -8,3 +8,9 @@ class Config:
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URL') or \
         'sqlite:///' + os.path.join(basedir, 'app.db')
+    CKEDITOR_PKG_TYPE = 'standart'
+    CKEDITOR_SERVE_LOCAL = True
+    CKEDITOR_ENABLE_CODESNIPPET = True
+    CKEDITOR_FILE_UPLOADER = 'upload'
+    UPLOADED_PATH = os.path.join(basedir, 'uploads')
+    ALLOWED_EXTENSIONS = ['jpg', 'gif', 'png', 'jpeg']

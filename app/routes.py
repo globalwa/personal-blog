@@ -1,18 +1,28 @@
-from app import app, db
+import os
+import uuid
+from app import app, db, ckeditor
 from app.forms import LoginForm, RegisterForm, PostForm
 from app.models import Post, User
-from flask import render_template, url_for, redirect
+from flask import render_template, url_for, redirect, send_from_directory, request
 from flask_login import login_user, logout_user, login_required, current_user
+from flask_ckeditor import upload_success, upload_fail
 
-@app.route('/', methods=['GET', 'POST'])
-@app.route('/index', methods=['GET', 'POST'])
+@app.route('/')
+@app.route('/index')
 def index():
-    form = PostForm()
     posts = Post.query.order_by(Post.id).all()
 
-    if form.validate_on_submit():
+    return render_template(
+        'index.html', posts=posts
+    )
 
-        post = Post.query.filter_by(title=form.title.data)
+@app.route('/publish', methods=['GET', 'POST'])
+@login_required
+def publish():
+    form = PostForm()
+
+    if form.validate_on_submit():
+        post = Post.query.filter_by(title=form.title.data).first()
         if post is None:
             post = Post(
                 title=form.title.data, 
@@ -24,7 +34,7 @@ def index():
         return redirect(url_for('index'))
 
     return render_template(
-        'index.html', form=form, posts=posts
+        'publish.html', title='New Post', form=form
     )
 
 @app.route('/about')
@@ -67,3 +77,19 @@ def register():
     return render_template(
         'register.html', title='Sign Up', form=form
     )
+
+@app.route('/files/<filename>')
+def uploaded_files(filename):
+    path = app.config['UPLOADED_PATH']
+    return send_from_directory(path, filename)
+
+@app.route('/upload', methods=['POST'])
+def upload():
+    file = request.files.get('upload')
+    extension = file.filename.split('.')[-1].lower()
+    if extension not in app.config['ALLOWED_EXTENSIONS']:
+        return upload_fail(message='Image only!')
+    filename = uuid.uuid4().hex + '.' + extension
+    file.save(os.path.join(app.config['UPLOADED_PATH'], filename))
+    url = url_for('uploaded_files', filename=filename)
+    return upload_success(url=url)

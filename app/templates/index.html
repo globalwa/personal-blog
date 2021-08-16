@@ -2,41 +2,17 @@
 
 {% block app_main %}
 
-{% if current_user.is_authenticated %}
-<form class="form" method="POST" action="" novalidate>
-    <p>
-        {{ form.hidden_tag() }}
-    </p>
-    <p>
-        {{ form.title.label }}<br>
-        {{ form.title() }}<br>
-        {% for error in form.title.errors %}
-            <span style="color: red;">{{ error }}</span>
-        {% endfor %}
-    </p>
-    <p>
-        {{ form.body.label }}<br>
-        {{ form.body() }}<br>
-        {% for error in form.body.errors %}
-            <span style="color: red;">{{ error }}</span>
-        {% endfor %}
-    </p>
-    <p>
-        {{ form.submit() }}
-    </p>
-</form>
-<hr>
-{% endif %}
-
-<div class="posts">
+<ul class="posts">
     {% for post in posts %}
-    <h4>{{ post.title }}</h4>
-    <p>
-        by <span>{{ post.author.username }}</span>
-        at <span>{{ post.timestamp }}</span>
-    </p>
-    <div>{{ post.body }}</div>
+    <li>
+        <h4>{{ post.title }}</h4>
+        <p>
+            by <span>{{ post.author.username }}</span>
+            at <span>{{ post.timestamp }}</span>
+        </p>
+        <div>{{ post.body | safe}}</div>
+    </li>
     {% endfor %}
-</div>
+</ul>
 
 {% endblock %}

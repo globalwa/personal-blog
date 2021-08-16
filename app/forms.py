@@ -1,6 +1,7 @@
 from app.models import User
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, SubmitField, TextAreaField
+from flask_ckeditor import CKEditorField
 from wtforms.validators import DataRequired, EqualTo, Length, ValidationError
 
 class LoginForm(FlaskForm):
@@ -36,7 +37,7 @@ class PostForm(FlaskForm):
         label='Title:',
         validators=[DataRequired(), Length(min=4, max=64)]
     )
-    body = TextAreaField(
+    body = CKEditorField(
         label='Text:',
         validators=[DataRequired()]
     )

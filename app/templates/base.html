@@ -19,6 +19,7 @@
                     {% if not current_user.is_authenticated %}
                     <li><a href="{{ url_for('login') }}">Log In</a></li>
                     {% else %}
+                    <li><a href="{{ url_for('publish') }}">Publish</a></li>
                     <li><a href="{{ url_for('logout') }}">Log Out</a></li>
                     {% endif %}
                     <li><a href="{{ url_for('register') }}">Sign Up</a></li>
@@ -37,5 +38,7 @@
             </div>
         </footer>
     </div>
+
+    {% block app_script %}{% endblock %}
 </body>
 </html>

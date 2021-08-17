@@ -2,6 +2,7 @@ from datetime import datetime
 from app import db, login_manager
 from flask_login import UserMixin
 from werkzeug.security import generate_password_hash, check_password_hash
+from slugify import slugify
 
 class User(UserMixin, db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -24,6 +25,10 @@ class Post(db.Model):
     body = db.Column(db.String)
     timestamp = db.Column(db.DateTime, default=datetime.utcnow)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+
+    @property
+    def slugified_title(self):
+        return slugify(self.title)
 
     def __repr__(self):
         return f'<Post {self.title}>'

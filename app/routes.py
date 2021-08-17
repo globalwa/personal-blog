@@ -10,7 +10,7 @@ from flask_ckeditor import upload_success, upload_fail
 @app.route('/')
 @app.route('/index')
 def index():
-    posts = Post.query.order_by(Post.id).all()
+    posts = Post.query.order_by(Post.timestamp.desc()).all()
 
     return render_template(
         'index.html', posts=posts
@@ -45,7 +45,6 @@ def about():
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     form = LoginForm()
-
     if form.validate_on_submit():
         user = User.query.filter_by(username=form.username.data).first()
         if user is None or not user.check_password(form.password.data):
@@ -66,7 +65,6 @@ def logout():
 @app.route('/register', methods=['GET', 'POST'])
 def register():
     form = RegisterForm()
-
     if form.validate_on_submit():
         user = User(username=form.username.data)
         user.set_password(form.password.data)
@@ -76,6 +74,13 @@ def register():
 
     return render_template(
         'register.html', title='Sign Up', form=form
+    )
+
+@app.route('/post/<post_id>/<slug>')
+def post(post_id, slug):
+    post = Post.query.get(post_id)
+    return render_template(
+        'post.html', post=post
     )
 
 @app.route('/files/<filename>')

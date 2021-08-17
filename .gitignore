@@ -37,4 +37,5 @@ nosetests.xml
 
 venv
 app.db
-microblog.log*
+app.db-journal
+personal-blog.log*

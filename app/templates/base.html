@@ -16,6 +16,7 @@
         <header class="header">
             <nav class="nav">
                 <ul>
+                    <li><a href="{{ url_for('index') }}">Blog</a></li>
                     {% if not current_user.is_authenticated %}
                     <li><a href="{{ url_for('login') }}">Log In</a></li>
                     {% else %}

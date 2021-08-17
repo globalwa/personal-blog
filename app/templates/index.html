@@ -5,12 +5,31 @@
 <ul class="posts">
     {% for post in posts %}
     <li>
-        <h4>{{ post.title }}</h4>
+        <h4>
+            <a href="{{ url_for('post', post_id=post.id, slug=post.slugified_title) }}">
+                {{ post.title }}
+            </a>
+        </h4>
         <p>
             by <span>{{ post.author.username }}</span>
             at <span>{{ post.timestamp }}</span>
         </p>
-        <div>{{ post.body | safe}}</div>
+        <div>
+            {% if post.body | length > 250 %}
+            <p>
+                {{ post.body[:250] | safe}}<br>
+                <span>
+                    <a href="{{ url_for('post', post_id=post.id, slug=post.slugified_title) }}">
+                        Read more...
+                    </a>
+                </span>
+            </p>
+            {% else %}
+            <p>
+                {{ post.body | safe}}
+            </p>
+            {% endif %}
+        </div>
     </li>
     {% endfor %}
 </ul>

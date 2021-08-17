@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+
+{% block app_main %}
+<div>
+    <h1>{{ post.title }}</h1>
+    <p>
+        by {{ post.author.username }} <br>
+        at {{ post.timestamp }}
+    </p>
+</div>
+<hr>
+<div>
+    {{ post.body | safe}}
+</div>
+{% endblock %}

@@ -1,0 +1,9 @@
+{% extends "base.html" %}
+
+{% block app_main %}
+<h1>Internal Error</h1>
+<p>
+    Somethings was wrong, but it is not your fault. Contact the administrator if you have any information about the situation.
+    <a href="{{ url_for('index') }}">Click</a>, to return to the main page.
+</p>
+{% endblock %}

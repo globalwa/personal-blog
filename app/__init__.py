@@ -12,4 +12,4 @@ migrate = Migrate(app, db)
 login_manager = LoginManager(app)
 ckeditor = CKEditor(app)
 
-from app import routes, models
+from app import routes, models, handlers

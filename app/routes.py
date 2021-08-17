@@ -77,6 +77,7 @@ def register():
     )
 
 @app.route('/post/<post_id>/<slug>')
+@login_required
 def post(post_id, slug):
     post = Post.query.get(post_id)
     return render_template(
@@ -89,6 +90,7 @@ def uploaded_files(filename):
     return send_from_directory(path, filename)
 
 @app.route('/upload', methods=['POST'])
+@login_required
 def upload():
     file = request.files.get('upload')
     extension = file.filename.split('.')[-1].lower()

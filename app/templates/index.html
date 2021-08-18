@@ -4,30 +4,30 @@
 
 <ul class="posts">
     {% for post in posts %}
-    <li>
-        <h4>
+    <li class="post">
+        <h3 class="post__title">
             <a href="{{ url_for('post', post_id=post.id, slug=post.slugified_title) }}">
                 {{ post.title }}
             </a>
-        </h4>
-        <p>
-            by <span>{{ post.author.username }}</span>
-            at <span>{{ post.timestamp }}</span>
+        </h3>
+        <p class="post__header">
+            By <em class="post__author">{{ post.author.username }}</em>
+            at <em class="post__date">{{ post.timestamp }}</em>.
         </p>
-        <div>
-            {% if post.body | length > 250 %}
-            <p>
-                {{ post.body[:250] | safe}}<br>
-                <span>
-                    <a href="{{ url_for('post', post_id=post.id, slug=post.slugified_title) }}">
+        <div class="post__content">
+            {% if post.body | length > 1000 %}
+                <div class="post__text">
+                    {{ post.body[:1000] | safe}}
+                </div>
+                <div class="post__footer">
+                    <a class="btn btn-primary btn-sm" href="{{ url_for('post', post_id=post.id, slug=post.slugified_title) }}">
                         Read more...
                     </a>
-                </span>
-            </p>
+                </div>
             {% else %}
-            <p>
-                {{ post.body | safe}}
-            </p>
+                <div class="post__text">
+                    {{ post.body | safe }}
+                </div>
             {% endif %}
         </div>
     </li>

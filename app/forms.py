@@ -21,7 +21,7 @@ class RegisterForm(FlaskForm):
         label='Password:', validators=[DataRequired(), Length(min=6, max=48)]
     )
     password_repeat = PasswordField(
-        label='Password:', validators=[DataRequired(), EqualTo('password')]
+        label='Repeat Password:', validators=[DataRequired(), EqualTo('password')]
     )
     submit = SubmitField(label='Sign Up')
 

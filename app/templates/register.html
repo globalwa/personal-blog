@@ -1,29 +1,35 @@
 {% extends "base.html" %}
 
 {% block app_main %}
+
 <form class="form" method="POST" action="" novalidate>
-    <p>{{ form.hidden_tag() }}</p>
-    <p>
-        {{ form.username.label }}<br>
-        {{ form.username() }}<br>
+    <div>
+        {{ form.hidden_tag() }}
+    </div>
+    <div class="form-group">
+        <label for="username">{{ form.username.label }}</label>
+        {{ form.username(class_="form-control", id="username", placeholder="Enter your username here") }}
         {% for error in form.username.errors %}
-            <span style="color: red;">{{ error }}</span>
+        <span class="form__error">{{ error }}</span>
         {% endfor %}
-    </p>
-    <p>
-        {{ form.password.label }}<br>
-        {{ form.password() }}<br>
+    </div>
+    <div class="form-group">
+        <label for="password">{{ form.password.label }}</label>
+        {{ form.password(class_="form-control", id="password", placeholder="Enter your password here") }}
         {% for error in form.password.errors %}
-            <span style="color: red;">{{ error }}</span>
+        <span class="form__error">{{ error }}</span>
         {% endfor %}
-    </p>
-    <p>
-        {{ form.password_repeat.label }}<br>
-        {{ form.password_repeat() }}<br>
+    </div>
+    <div class="form-group">
+        <label for="password-repeat">{{ form.password_repeat.label }}</label>
+        {{ form.password_repeat(class_="form-control", id="password-repeat", placeholder="Enter your password here again") }}
         {% for error in form.password_repeat.errors %}
-            <span style="color: red;">{{ error }}</span>
+        <span class="form__error">{{ error }}</span>
         {% endfor %}
-    </p>
-    <p>{{ form.submit() }}</p>
+    </div>
+    <div>
+        {{ form.submit(class_="btn btn-default") }}
+    </div>
 </form>
+
 {% endblock %}

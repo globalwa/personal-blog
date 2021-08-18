@@ -1,5 +1,13 @@
 {% extends "base.html" %}
 
+{% block styles %}
+
+{{ super() }}
+<link rel="stylesheet"
+      href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.2.0/styles/github.min.css">
+
+{% endblock %}
+
 {% block app_main %}
 <div>
     <h1 class="post__title">{{ post.title }}</h1>
@@ -12,4 +20,12 @@
 <div class="post__text">
     {{ post.body | safe}}
 </div>
+{% endblock %}
+
+{% block scripts %}
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.2.0/highlight.min.js"></script>
+<script>hljs.highlightAll();</script>
+{{ super() }}
+
 {% endblock %}

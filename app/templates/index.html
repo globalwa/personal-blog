@@ -1,9 +1,17 @@
 {% extends "base.html" %}
 
+{% block styles %}
+
+{{ super() }}
+<link rel="stylesheet"
+      href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.2.0/styles/github.min.css">
+
+{% endblock %}
+
 {% block app_main %}
 
 <ul class="posts">
-    {% for post in posts %}
+    {% for post in posts.items %}
     <li class="post">
         <h3 class="post__title">
             <a href="{{ url_for('post', post_id=post.id, slug=post.slugified_title) }}">
@@ -33,5 +41,37 @@
     </li>
     {% endfor %}
 </ul>
+
+<nav class="pagination__nav">
+    <ul class="pagination">
+        {% if posts.has_prev %}
+        <li class="page-item">
+            <a class="page-link" href="{{ url_for('index', page=posts.prev_num) }}">Previous</a>
+        </li>
+        {% else %}
+        <li class="page-item disabled">
+            <a class="page-link" href="#" tabindex="-1">Previous</a>
+        </li>
+        {% endif %}
+
+        {% if posts.has_next %}
+        <li class="page-item">
+            <a class="page-link" href="{{ url_for('index', page=posts.next_num) }}">Next</a>
+        </li>
+        {% else %}
+        <li class="page-item disabled">
+            <a class="page-link" href="#" tabindex="-1">Next</a>
+        </li>
+        {% endif %}
+    </ul>
+</nav>
+
+{% endblock %}
+
+{% block scripts %}
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.2.0/highlight.min.js"></script>
+<script>hljs.highlightAll();</script>
+{{ super() }}
 
 {% endblock %}

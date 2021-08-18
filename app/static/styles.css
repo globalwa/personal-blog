@@ -99,3 +99,13 @@ body {
 .post__footer {
     margin-top: 20px;
 }
+
+.pagination__nav {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+pre code {
+    font-size: 15px;
+}

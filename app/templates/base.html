@@ -37,7 +37,7 @@ Personal Blog
                     </button>
                     <a class="navbar-brand" href="{{ url_for('index') }}">Personal Blog</a>
                 </div>
-        
+
                 <!-- Collect the nav links, forms, and other content for toggling -->
                 <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                     <ul class="nav navbar-nav">
@@ -62,13 +62,13 @@ Personal Blog
         <div class="container">
             <div class="inner row">
                 {% with messages = get_flashed_messages(with_categories=True) %}
-                    {% if messages %}
-                    <ul class="flashes">
-                        {% for cat, message in messages %}
-                        <li class="{{ cat }}">{{ message }}</li>
-                        {% endfor %}
-                    </ul>
-                    {% endif %}
+                {% if messages %}
+                <ul class="flashes">
+                    {% for cat, message in messages %}
+                    <li class="{{ cat }}">{{ message }}</li>
+                    {% endfor %}
+                </ul>
+                {% endif %}
                 {% endwith %}
                 <div class="content">
                     {% block app_main %}{% endblock %}

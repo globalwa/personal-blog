@@ -14,3 +14,4 @@ class Config:
     CKEDITOR_FILE_UPLOADER = 'upload'
     UPLOADED_PATH = os.path.join(basedir, 'uploads')
     ALLOWED_EXTENSIONS = ['jpg', 'gif', 'png', 'jpeg']
+    POSTS_PER_PAGE = 5

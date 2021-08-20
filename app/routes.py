@@ -1,11 +1,22 @@
+from functools import wraps
 import os
 import uuid
+
 from app import app, db, ckeditor
 from app.forms import LoginForm, RegisterForm, PostForm
 from app.models import Post, User
 from flask import render_template, url_for, redirect, send_from_directory, request, flash
 from flask_login import login_user, logout_user, login_required, current_user
 from flask_ckeditor import upload_success, upload_fail
+
+def editor_required(func):
+    @wraps(func)
+    def check(*args, **kwargs):
+        if not current_user.is_editor:
+            flash('You are not an editor!', 'alert alert-danger')
+            return redirect(url_for('index'))
+        return func(*args, **kwargs)
+    return check
 
 @app.route('/')
 @app.route('/index')
@@ -19,6 +30,7 @@ def index():
 
 @app.route('/publish', methods=['GET', 'POST'])
 @login_required
+@editor_required
 def publish():
     form = PostForm()
 
@@ -104,11 +116,10 @@ def register():
     )
 
 @app.route('/post/<post_id>/<slug>')
-@login_required
 def post(post_id, slug):
     post = Post.query.get(post_id)
     return render_template(
-        'post.html', post=post
+        'post.html', title=post.title, post=post
     )
 
 @app.route('/files/<filename>')
@@ -127,3 +138,46 @@ def upload():
     file.save(os.path.join(app.config['UPLOADED_PATH'], filename))
     url = url_for('uploaded_files', filename=filename)
     return upload_success(url=url)
+
+@app.route('/post/delete/<post_id>')
+@login_required
+@editor_required
+def delete(post_id):
+    post = Post.query.get(post_id)
+    if post is None:
+        flash('There is no such post!', 'alert alert-danger')
+    else:
+        db.session.delete(post)
+        db.session.commit()
+        flash('The post has been successfully deleted.', 'alert alert-success')
+    return redirect(url_for('index'))
+
+@app.route('/post/edit/<post_id>', methods=['GET', 'POST'])
+@login_required
+@editor_required
+def edit(post_id):
+    form = PostForm()
+    post = Post.query.get(post_id)
+
+    if post is None:
+        flash('There is no such post!', 'alert alert-danger')
+        return redirect(url_for('index'))
+
+    if form.validate_on_submit():
+        same_post = Post.query.filter_by(title=form.title.data).first()
+        
+        if same_post is not None and form.title.data != post.title:
+            flash('A post with the same title already exists.', 'alert alert-danger')
+            return redirect(url_for('edit', post_id=post_id))
+
+        post.title = form.title.data
+        post.body = form.body.data
+        db.session.add(post)
+        db.session.commit()
+        flash('The post has been successfully edited!', 'alert alert-success')
+        return redirect(url_for('post', post_id=post_id, slug=post.slugified_title))
+
+    return render_template(
+        'edit.html', title=f'Edit | {post.title}', 
+        form=form, post=post
+    )

@@ -16,6 +16,20 @@
         at <em class="post__date">{{ post.timestamp }}</em>.
     </p>
 </div>
+{% if current_user.is_editor %}
+<hr>
+<h4>Editor Menu</h4>
+<ul class="editor-menu">
+    <li><a 
+        href="{{ url_for('edit', post_id=post.id) }}" 
+        onclick="return confirm('Are you sure?');">
+        Edit</a></li>
+    <li><a 
+        href="{{ url_for('delete', post_id=post.id) }}"
+        onclick="return confirm('Are you sure?');">
+        Delete</a></li>
+</ul>
+{% endif %}
 <hr>
 <div class="post__text">
     {{ post.body | safe}}

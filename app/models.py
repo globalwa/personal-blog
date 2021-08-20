@@ -7,8 +7,13 @@ from slugify import slugify
 class User(UserMixin, db.Model):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(64), unique=True)
+    role = db.Column(db.String, default='reader')
     password_hash = db.Column(db.String(128))
     posts = db.relationship('Post', backref='author', lazy='dynamic')
+
+    @property
+    def is_editor(self):
+        return self.role == 'editor'
 
     def __repr__(self):
         return f'<User {self.username}>'

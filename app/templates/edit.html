@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+
+
+{% block app_main %}
+
+<form class="publish" method="POST" action="" novalidate>
+    <p>
+        {{ form.hidden_tag() }}
+    </p>
+    <p>
+        {{ form.title.label }}<br>
+        {{ form.title(class_="form-control", value=post.title) }}<br>
+        {% for error in form.title.errors %}
+            <span style="color: red;">{{ error }}</span>
+        {% endfor %}
+    </p>
+    <p>
+        {{ form.body.label }}<br>
+        {% set f = form.body.process_data(post.body) %}
+        {{ form.body() }}<br>
+        {% for error in form.body.errors %}
+            <span style="color: red;">{{ error }}</span>
+        {% endfor %}
+    </p>
+    <p>
+        {{ form.submit(class_="btn btn-primary") }}
+    </p>
+</form>
+
+{% endblock %}
+
+
+{% block scripts %}
+
+{{ ckeditor.load(custom_url=url_for('static', filename='ckeditor/ckeditor.js')) }}
+{{ ckeditor.config(name='body') }}
+{{ super() }}
+
+{% endblock %}

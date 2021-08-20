@@ -35,6 +35,7 @@ nosetests.xml
 .project
 .pydevproject
 
+.env
 venv
 app.db
 app.db-journal

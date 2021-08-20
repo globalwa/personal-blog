@@ -10,6 +10,7 @@ class User(UserMixin, db.Model):
     role = db.Column(db.String, default='reader')
     password_hash = db.Column(db.String(128))
     posts = db.relationship('Post', backref='author', lazy='dynamic')
+    comments = db.relationship('Comment', backref='author', lazy='dynamic')
 
     @property
     def is_editor(self):
@@ -30,6 +31,7 @@ class Post(db.Model):
     body = db.Column(db.String)
     timestamp = db.Column(db.DateTime, default=datetime.utcnow)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+    comments = db.relationship('Comment', backref='post', lazy='dynamic')
 
     @property
     def slugified_title(self):
@@ -37,6 +39,13 @@ class Post(db.Model):
 
     def __repr__(self):
         return f'<Post {self.title}>'
+
+class Comment(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    body = db.Column(db.String)
+    timestamp = db.Column(db.DateTime, default=datetime.utcnow)
+    post_id = db.Column(db.Integer, db.ForeignKey('post.id'))
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
 
 @login_manager.user_loader
 def load_user(user_id):

@@ -80,12 +80,19 @@ Personal Blog
         <nav class="navbar navbar-default navbar-fixed-bottom">
             <div class="container">
                 <ul class="socials">
-                    <li class="socials__item"><a href="https://github.com/">github</a></li>
+                    <li class="socials__item"><a href="https://github.com/sergaso">github</a></li>
                     <li class="socials__item"><a href="mailto:example@gmail.com">example@gmail.com</a></li>
                 </ul>
             </div>
         </nav>
     </footer>
 </div>
+
+{% endblock %}
+
+{% block scripts %}
+
+{{ super() }}
+{{ moment.include_moment() }}
 
 {% endblock %}

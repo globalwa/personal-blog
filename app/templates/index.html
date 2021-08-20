@@ -20,7 +20,7 @@
         </h3>
         <p class="post__header">
             By <em class="post__author">{{ post.author.username }}</em>
-            at <em class="post__date">{{ post.timestamp }}</em>.
+            at <em class="post__date">{{ moment(post.timestamp).format('L') }}</em>.
         </p>
         <div class="post__content">
             {% if post.body | length > 1000 %}

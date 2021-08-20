@@ -13,7 +13,7 @@
     <h1 class="post__title">{{ post.title }}</h1>
     <p>
         By <em class="post__author">{{ post.author.username }}</em>
-        at <em class="post__date">{{ post.timestamp }}</em>.
+        at <em class="post__date">{{ moment(post.timestamp).format('LLLL') }}</em>.
     </p>
 </div>
 {% if current_user.is_editor %}
@@ -34,10 +34,53 @@
 <div class="post__text">
     {{ post.body | safe}}
 </div>
+
+<hr>
+<section class="comment">
+    {% if current_user.is_authenticated %}
+    <h3 class="comment__title title">What do you think?</h3>
+    <div class="comment__write">
+        <form class="comment__form" method="POST" action="" novalidate>
+            <div>
+                {{ form.hidden_tag() }}
+            </div>
+            <div class="">
+                {{ form.body.label }}<br>
+                {{ form.body(placeholder="Write your comment here") }}<br>
+                {% for error in form.body.errors %}
+                <span class="form__error">{{ error }}</span>
+                {% endfor %}
+            </div>
+            <div>
+                {{ form.submit(class_="btn btn-primary") }}
+            </div>
+        </form>
+    </div>
+    {% endif %}
+    {% if comments %}
+    <hr>
+    <h3 class="comment__title title">Comments</h3>
+    <ul class="comment__items">
+        {% for comment in comments %}
+            <li class="comment__item">
+                <div class="comment__item-header">
+                    <span class="comment__date">By {{ comment.author.username }} at {{ moment(comment.timestamp).format('LL') }}</span>
+                </div>
+                <div class="comment__item-text">
+                    {{ comment.body | safe }}
+                </div>
+            </li>
+        {% endfor %}
+    </ul>
+    {% endif %}
+</section>
+
 {% endblock %}
 
 {% block scripts %}
 
+{{ ckeditor.load(custom_url=url_for('static', filename='ckeditor/ckeditor.js')) }}
+{{ ckeditor.config(name='body') }}
 <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.2.0/highlight.min.js"></script>
 <script>hljs.highlightAll();</script>
 {{ super() }}

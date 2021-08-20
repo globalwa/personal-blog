@@ -2,9 +2,9 @@ from functools import wraps
 import os
 import uuid
 
-from app import app, db, ckeditor
-from app.forms import LoginForm, RegisterForm, PostForm
-from app.models import Post, User
+from app import app, db, ckeditor, moment
+from app.forms import CommentForm, LoginForm, RegisterForm, PostForm
+from app.models import Comment, Post, User
 from flask import render_template, url_for, redirect, send_from_directory, request, flash
 from flask_login import login_user, logout_user, login_required, current_user
 from flask_ckeditor import upload_success, upload_fail
@@ -115,11 +115,31 @@ def register():
         'register.html', title='Sign Up', form=form
     )
 
-@app.route('/post/<post_id>/<slug>')
+@app.route('/post/<post_id>/<slug>', methods=['GET', 'POST'])
 def post(post_id, slug):
+    form = CommentForm()
     post = Post.query.get(post_id)
+    comments = Comment.query.filter_by(post_id=post_id) \
+        .order_by(Comment.timestamp.desc()).all()
+
+    if post is None:
+        flash('There is no such a post!', 'alert alert-success')
+        return redirect(url_for('index'))
+
+    if form.validate_on_submit():
+        comment = Comment(
+            body=form.body.data,
+            author=current_user,
+            post=post
+            )
+        db.session.add(comment)
+        db.session.commit()
+        flash('You have successfully left a comment!', 'alert alert-success')
+        return redirect(url_for('post', post_id=post_id, slug=slug))
+
     return render_template(
-        'post.html', title=post.title, post=post
+        'post.html', title=post.title, 
+        post=post, form=form, comments=comments
     )
 
 @app.route('/files/<filename>')

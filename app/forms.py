@@ -42,6 +42,13 @@ class PostForm(FlaskForm):
         validators=[DataRequired()]
     )
     submit = SubmitField(label='Publish')
+
+class CommentForm(FlaskForm):
+    body = CKEditorField(
+        label='Text:',
+        validators=[DataRequired()]
+    )
+    submit = SubmitField(label='Comment')
         
 
 

@@ -6,9 +6,9 @@ from slugify import slugify
 
 class User(UserMixin, db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    username = db.Column(db.String(64), unique=True)
+    username = db.Column(db.String, unique=True)
     role = db.Column(db.String, default='reader')
-    password_hash = db.Column(db.String(128))
+    password_hash = db.Column(db.String)
     posts = db.relationship('Post', backref='author', lazy='dynamic')
     comments = db.relationship('Comment', backref='author', lazy='dynamic')
 
@@ -27,7 +27,7 @@ class User(UserMixin, db.Model):
 
 class Post(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    title = db.Column(db.String(64), unique=True)
+    title = db.Column(db.String, unique=True)
     body = db.Column(db.String)
     timestamp = db.Column(db.DateTime, default=datetime.utcnow)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))

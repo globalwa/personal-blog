@@ -13,7 +13,6 @@ pre code {
 }
 
 .main {
-    padding-bottom: 100px;
     display: flex;
     flex-grow: 1;
 }
@@ -21,6 +20,7 @@ pre code {
 .inner {
     padding: 0px 10px;
     height: 100%;
+    position: relative;
 }
 
 .flashes {
@@ -29,7 +29,8 @@ pre code {
 }
 
 .content {
-    height: 90%;
+    height: 100%;
+    padding-bottom: 100px;
 }
 
 .content > .form {
@@ -39,8 +40,12 @@ pre code {
     justify-content: center;
 }
 
-.about {
+.about__body {
     display: flex;
+}
+
+.about__text {
+    margin-right: 15px;
 }
 
 .form {
@@ -98,7 +103,7 @@ pre code {
 }
 
 .post__text {
-    font-size: 16px;
+    font-size: 15px;
 }
 
 .post__footer {
@@ -109,6 +114,10 @@ pre code {
     display: flex;
     align-items: center;
     justify-content: center;
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 50px;
 }
 
 .comment__title {
@@ -146,5 +155,27 @@ pre code {
     font-size: 15px;
 }
 
-/* #e7e7e7 */
-/* #f8f8f8 */
+@media only screen and (max-width: 765px) {
+    .container {
+        width: 100%;
+    }
+
+    .about__body {
+        flex-direction: column-reverse;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .about__text {
+        margin-right: 0px;
+    }
+
+    .about__img {
+        margin: 15px 0px 20px 0px;
+        text-align: center;
+    }
+
+    .about__img img {
+        max-width: 90%;
+    }
+}

@@ -60,17 +60,17 @@ Personal Blog
     </header>
     <main class="main">
         <div class="container">
-            <div class="inner row">
-                {% with messages = get_flashed_messages(with_categories=True) %}
-                {% if messages %}
-                <ul class="flashes">
-                    {% for cat, message in messages %}
-                    <li class="{{ cat }}">{{ message }}</li>
-                    {% endfor %}
-                </ul>
-                {% endif %}
-                {% endwith %}
+            <div class="inner">
                 <div class="content">
+                    {% with messages = get_flashed_messages(with_categories=True) %}
+                    {% if messages %}
+                    <ul class="flashes">
+                        {% for cat, message in messages %}
+                        <li class="{{ cat }}">{{ message }}</li>
+                        {% endfor %}
+                    </ul>
+                    {% endif %}
+                    {% endwith %}
                     {% block app_main %}{% endblock %}
                 </div>
             </div>
